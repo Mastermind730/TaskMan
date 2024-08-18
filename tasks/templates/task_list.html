@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Your Tasks</h2>
+<a href="{% url 'add_task' %}" class="btn btn-primary mb-3">
+    <i class="bi bi-plus"></i> Add Task
+</a>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>
+            <a href="?sort_by=name&order={% if current_sort == 'name' and current_order == 'asc' %}desc{% else %}asc{% endif %}">
+                Name 
+                {% if current_sort == 'name' %}
+                    {% if current_order == 'asc' %}
+                        <i class="bi bi-arrow-up"></i>
+                    {% else %}
+                        <i class="bi bi-arrow-down"></i>
+                    {% endif %}
+                {% endif %}
+            </a>
+        </th>
+        <th>
+            <a href="?sort_by=deadline&order={% if current_sort == 'deadline' and current_order == 'asc' %}desc{% else %}asc{% endif %}">
+                Deadline 
+                {% if current_sort == 'deadline' %}
+                    {% if current_order == 'asc' %}
+                        <i class="bi bi-arrow-up"></i>
+                    {% else %}
+                        <i class="bi bi-arrow-down"></i>
+                    {% endif %}
+                {% endif %}
+            </a>
+        </th>
+        <th>Completed</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for task in tasks %}
+        <tr>
+            <td>{{ task.name }}</td>
+            <td>{{ task.deadline|date:"d M, Y" }}</td>
+            <td>{{ task.completed }}</td>
+            <td>
+                {% if task.completed %}
+                    <a href="{% url 'mark_task' task.id 0 %}" class="btn btn-warning">
+                        <i class="bi bi-x-circle"></i> Mark Incomplete
+                    </a>
+                {% else %}
+                    <a href="{% url 'mark_task' task.id 1 %}" class="btn btn-success">
+                        <i class="bi bi-check-circle"></i> Mark Complete
+                    </a>
+                {% endif %}
+                <a href="{% url 'delete_task' task.id %}" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Delete
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

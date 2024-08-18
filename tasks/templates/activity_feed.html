@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="activity-header">Activity Feed</h2>
+<table class="table table-hover table-bordered activity-table">
+    <thead class="thead-light">
+        <tr>
+            <th>
+                <a href="?sort_by=timestamp&order={% if current_sort == 'timestamp' and current_order == 'asc' %}desc{% else %}asc{% endif %}">
+                    Timestamp 
+                    {% if current_sort == 'timestamp' %}
+                        {% if current_order == 'asc' %}
+                            <i class="bi bi-arrow-up"></i>
+                        {% else %}
+                            <i class="bi bi-arrow-down"></i>
+                        {% endif %}
+                    {% endif %}
+                </a>
+            </th>
+            <th>Activity</th>
+            <!-- <th>Icon</th> -->
+        </tr>
+    </thead>
+    <tbody>
+    {% for activity in activities %}
+        <tr class="activity-item">
+            <td>{{ activity.timestamp|date:"d M, Y H:i" }}</td>
+            <td>{{ activity.action }}</td>
+            <!-- <td class="activity-icon"><i class="bi bi-tasks"></i></td> Customize the icon as needed -->
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* General Styling */
+    body {
+        background-color: #f0f4f8;
+        color: #333;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Activity Feed Header */
+    .activity-header {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 25px;
+        color: #007bff;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
+
+    /* Table Styling */
+    .activity-table {
+        width: 100%;
+        border-collapse: collapse;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .activity-table thead th {
+        background-color: #e9ecef;
+        color: #495057;
+        font-weight: bold;
+        text-align: center;
+        padding: 15px;
+        vertical-align: middle;
+    }
+
+    .activity-table tbody td {
+        padding: 20px;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    /* Hover Effect on Activity Row */
+    .activity-item:hover {
+        background-color: #e3f2fd;
+        transform: scale(1.02);
+        transition: all 0.2s ease-in-out;
+    }
+
+    /* Activity Icon */
+    .activity-icon {
+        font-size: 24px;
+        color: #007bff;
+    }
+</style>
+{% endblock %}
